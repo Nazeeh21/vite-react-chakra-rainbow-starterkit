@@ -10,24 +10,25 @@ import Routings from "lib/router/Routings";
 import { theme } from "lib/styles/customTheme";
 import "@rainbow-me/rainbowkit/styles.css";
 
-const App = () => {
-  const { chains, provider } = configureChains(
-    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
-    [
-      alchemyProvider({ alchemyId: import.meta.env.ALCHEMY_ID }),
-      publicProvider(),
-    ]
-  );
-  const { connectors } = getDefaultWallets({
-    appName: "Vite-React-Chakra-Wagmi-Rainbow-StarterKit",
-    chains,
-  });
+const { chains, provider } = configureChains(
+  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [
+    alchemyProvider({ alchemyId: import.meta.env.ALCHEMY_ID }),
+    publicProvider(),
+  ]
+);
+const { connectors } = getDefaultWallets({
+  appName: "Vite-React-Chakra-Wagmi-Rainbow-StarterKit",
+  chains,
+});
 
-  const wagmiClient = createClient({
-    autoConnect: true,
-    connectors,
-    provider,
-  });
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
+
+const App = () => {
   return (
     <ChakraProvider theme={theme}>
       <WagmiConfig client={wagmiClient}>
