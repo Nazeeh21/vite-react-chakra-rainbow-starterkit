@@ -2,7 +2,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { BrowserRouter as Router } from "react-router-dom";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 
 import Layout from "lib/layout";
@@ -12,9 +12,16 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 const App = () => {
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+    [chain.mainnet], // you can add more chains here like chain.polygon, chain.goerli
     [
-      alchemyProvider({ alchemyId: import.meta.env.ALCHEMY_ID }),
+      jsonRpcProvider({
+        rpc: () => {
+          return {
+            http: "https://rpc.ankr.com/eth", // go to https://www.ankr.com/protocol/ to get a free RPC for your network if you're not using Polygon
+          };
+        },
+      }),
+
       publicProvider(),
     ]
   );
